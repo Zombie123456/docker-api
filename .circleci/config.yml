@@ -3,7 +3,7 @@ jobs:
   unit_test:
     parallelism: 1
     docker:
-      - image: chalice/$CIRCLE_PROJECT_REPONAME:latest  # the first image is the environment where steps will be executed
+      - image: chalice/learn_server:latest  # the first image is the environment where steps will be executed
         auth:
           username: $DOCKER_USER  # can specify string literal values
           password: $DOCKER_PASS  # or project environment variable reference
