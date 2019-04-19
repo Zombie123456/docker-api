@@ -1,8 +1,35 @@
 version: 2
 jobs:
-  build:
-    docker: # use the docker executor type; machine and macos executors are also supported
-      - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
+  unit_test:
+    parallelism: 1
+    docker:
+      - image: chalice/$CIRCLE_PROJECT_REPONAME:latest  # the first image is the environment where steps will be executed
+        auth:
+          username: $DOCKER_USER  # can specify string literal values
+          password: $DOCKER_PASS  # or project environment variable reference
+        name: django
+        environment:
+          DOCKERIZED: true
+      - image: mysql:5.7.25
+        environment:
+          MYSQL_ROOT_PASSWORD: pass1234
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        name: postgres
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - checkout  # to pull the source code from repository
+      - setup_remote_docker:  # needed to connect container ports
+          docker_layer_caching: true
+      - run: pip install -r requirements.txt
+      - run: python manage.py makemigrations
+      - run: python manage.py migrate
+      - run: python manage.py test
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - unit_test:
+          filters:
+            branches:
+              only:
+                - master
+                - production
