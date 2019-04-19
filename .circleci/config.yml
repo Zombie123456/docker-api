@@ -23,22 +23,22 @@ jobs:
       - run: python manage.py makemigrations
       - run: python manage.py migrate
       - run: python manage.py test
-    push_docker_image:
-      machine: true
-      steps:
-      - checkout
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-      - run: echo $WHITELIST
-      - run: echo $MAX_AGE
-      - run: >-
-          docker build
-          --build-arg CIRCLE_BRANCH=$CIRCLE_BRANCH
-          --cache-from=chalice/learn_server:$CIRCLE_BRANCH
-          -t chalice/learn_server:$CIRCLE_BRANCH
-          -t chalice/learn_server:latest
-          .
-      - run: docker push chalice/learn_server:$CIRCLE_BRANCH
-      - run: docker push chalice/learn_server:latest
+  push_docker_image:
+    machine: true
+    steps:
+    - checkout
+    - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - run: echo $WHITELIST
+    - run: echo $MAX_AGE
+    - run: >-
+        docker build
+        --build-arg CIRCLE_BRANCH=$CIRCLE_BRANCH
+        --cache-from=chalice/learn_server:$CIRCLE_BRANCH
+        -t chalice/learn_server:$CIRCLE_BRANCH
+        -t chalice/learn_server:latest
+        .
+    - run: docker push chalice/learn_server:$CIRCLE_BRANCH
+    - run: docker push chalice/learn_server:latest
 
 
 
