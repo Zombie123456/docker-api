@@ -14,7 +14,7 @@ jobs:
         environment:
           MYSQL_ROOT_PASSWORD: pass1234
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        name: postgres
+        name: for_mysql
     steps:
       - checkout  # to pull the source code from repository
       - setup_remote_docker:  # needed to connect container ports
