@@ -5,8 +5,8 @@ jobs:
     docker:
       - image: chalice/learn_server:latest  # the first image is the environment where steps will be executed
         auth:
-          username: $DOCKER_USER  # can specify string literal values
-          password: $DOCKER_PASS  # or project environment variable reference
+          username: $DOCKER_USERNAME  # can specify string literal values
+          password: $DOCKER_PASSWORLD  # or project environment variable reference
         name: django
         environment:
           DOCKERIZED: true
