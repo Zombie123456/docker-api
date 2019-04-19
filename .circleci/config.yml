@@ -27,9 +27,7 @@ jobs:
     machine: true
     steps:
     - checkout
-    - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-    - run: echo $WHITELIST
-    - run: echo $MAX_AGE
+    - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORLD
     - run: >-
         docker build
         --build-arg CIRCLE_BRANCH=$CIRCLE_BRANCH
