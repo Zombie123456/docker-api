@@ -41,8 +41,8 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: ssh://chalice.top:22
-      - run: cd lcy/
+      - run: ssh root@chalice.top
+      - run: cd ~/lcy/
 
 
 workflows:
