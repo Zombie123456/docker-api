@@ -37,12 +37,6 @@ jobs:
         .
     - run: docker push chalice/learn_server:$CIRCLE_BRANCH
     - run: docker push chalice/learn_server:latest
-  deploy_to_code:
-    machine: true
-    steps:
-      - checkout
-      - run: ssh root@chalice.top
-      - run: cd ~/lcy/
 
 
 workflows:
@@ -58,14 +52,6 @@ workflows:
       - push_docker_image:
           requires:
           - unit_test
-          filters:
-            branches:
-              only:
-              - master
-              - production
-      - deploy_to_code:
-          requires:
-          - push_docker_image
           filters:
             branches:
               only:
