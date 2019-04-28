@@ -1,60 +1,60 @@
-version: 2
-jobs:
-  unit_test:
-    parallelism: 1
-    docker:
-      - image: chalice/learn_server:latest  # the first image is the environment where steps will be executed
-        auth:
-          username: $DOCKER_USERNAME  # can specify string literal values
-          password: $DOCKER_PASSWORLD  # or project environment variable reference
-        name: django
-        environment:
-          DOCKERIZED: true
-      - image: mysql:5.7.25
-        environment:
-          MYSQL_ROOT_PASSWORD: pass1234
-        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-        name: for_mysql
-    steps:
-      - checkout  # to pull the source code from repository
-      - setup_remote_docker:  # needed to connect container ports
-          docker_layer_caching: true
-      - run: pip install -r requirements.txt
-      - run: python manage.py makemigrations
-      - run: python manage.py migrate
-      - run: python manage.py test
-  push_docker_image:
-    machine: true
-    steps:
-    - checkout
-    - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORLD
-    - run: >-
-        docker build
-        --build-arg CIRCLE_BRANCH=$CIRCLE_BRANCH
-        --cache-from=chalice/learn_server:$CIRCLE_BRANCH
-        -t chalice/learn_server:$CIRCLE_BRANCH
-        -t chalice/learn_server:latest
-        .
-    - run: docker push chalice/learn_server:$CIRCLE_BRANCH
-    - run: docker push chalice/learn_server:latest
-
-
-workflows:
-  version: 2
-  pipeline:
-    jobs:
-      - unit_test:
-          filters:
-            branches:
-              only:
-                - master
-                - production
-      - push_docker_image:
-          requires:
-          - unit_test
-          filters:
-            branches:
-              only:
-              - master
-              - production
-
+#version: 2
+#jobs:
+#  unit_test:
+#    parallelism: 1
+#    docker:
+#      - image: chalice/learn_server:latest  # the first image is the environment where steps will be executed
+#        auth:
+#          username: $DOCKER_USERNAME  # can specify string literal values
+#          password: $DOCKER_PASSWORLD  # or project environment variable reference
+#        name: django
+#        environment:
+#          DOCKERIZED: true
+#      - image: mysql:5.7.25
+#        environment:
+#          MYSQL_ROOT_PASSWORD: pass1234
+#        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+#        name: for_mysql
+#    steps:
+#      - checkout  # to pull the source code from repository
+#      - setup_remote_docker:  # needed to connect container ports
+#          docker_layer_caching: true
+#      - run: pip install -r requirements.txt
+#      - run: python manage.py makemigrations
+#      - run: python manage.py migrate
+#      - run: python manage.py test
+#  push_docker_image:
+#    machine: true
+#    steps:
+#    - checkout
+#    - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORLD
+#    - run: >-
+#        docker build
+#        --build-arg CIRCLE_BRANCH=$CIRCLE_BRANCH
+#        --cache-from=chalice/learn_server:$CIRCLE_BRANCH
+#        -t chalice/learn_server:$CIRCLE_BRANCH
+#        -t chalice/learn_server:latest
+#        .
+#    - run: docker push chalice/learn_server:$CIRCLE_BRANCH
+#    - run: docker push chalice/learn_server:latest
+#
+#
+#workflows:
+#  version: 2
+#  pipeline:
+#    jobs:
+#      - unit_test:
+#          filters:
+#            branches:
+#              only:
+#                - master
+#                - production
+#      - push_docker_image:
+#          requires:
+#          - unit_test
+#          filters:
+#            branches:
+#              only:
+#              - master
+#              - production
+#
