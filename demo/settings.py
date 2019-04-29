@@ -77,7 +77,7 @@ THIRD_PARTY_APPS = [
     'oauth2_provider',
     'captcha',
     'configset',
-    'aliyun_oss2_storage'
+    'django_aliyun_oss2'
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -208,8 +208,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILE_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    '/static/',
+]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
 MEDIA_URL = '/upload/'
 
@@ -257,14 +261,15 @@ LOGGING = {
            }
 }
 
+DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
+STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
 
-DEFAULT_FILE_STORAGE = 'aliyun_oss2_storage.backends.AliyunMediaStorage'
-STATICFILES_STORAGE = 'aliyun_oss2_storage.backends.AliyunStaticStorage'
 
 ACCESS_KEY_ID = 'LTAIb5I3lIEeE8G9'
 ACCESS_KEY_SECRET = '9aEqviBE0CwMU5MOvF2ScIeWGltKoR'
 END_POINT = 'oss-cn-hongkong.aliyuncs.com'
 BUCKET_NAME = 'chalice'
+ALIYUN_OSS_CNAME = ''
 BUCKET_ACL_TYPE = 'public-read'
 
 

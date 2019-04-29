@@ -16,4 +16,4 @@ requests
 colorlog==3.1.4
 django-redis==4.10.0
 tldextract
-django-aliyun-oss2-storage
+django-aliyun-oss2
