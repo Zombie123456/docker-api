@@ -76,7 +76,8 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'oauth2_provider',
     'captcha',
-    'configset'
+    'configset',
+    'aliyun_oss2_storage'
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -255,6 +256,17 @@ LOGGING = {
                },
            }
 }
+
+
+DEFAULT_FILE_STORAGE = 'aliyun_oss2_storage.backends.AliyunMediaStorage'
+STATICFILES_STORAGE = 'aliyun_oss2_storage.backends.AliyunStaticStorage'
+
+ACCESS_KEY_ID = 'LTAIb5I3lIEeE8G9'
+ACCESS_KEY_SECRET = '9aEqviBE0CwMU5MOvF2ScIeWGltKoR'
+END_POINT = 'oss-cn-hongkong.aliyuncs.com'
+BUCKET_NAME = 'chalice'
+BUCKET_ACL_TYPE = 'public-read'
+
 
 __app_logging = {'handlers': ['console', ],
                  'level': log_level,
