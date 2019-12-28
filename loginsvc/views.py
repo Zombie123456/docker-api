@@ -386,10 +386,10 @@ def is_self_phonenum(request, phone):
     token = get_valid_token(request)
     try:
         member_phone = token.user.member_user.phone
-        if not member_phone == phone:
+        if member_phone != phone:
             return True
     except:
-        return None
+        return False
 
 
 
