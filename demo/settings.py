@@ -25,6 +25,7 @@ SECRET_KEY = '52$^wtur+o)9+&ee%+5h@qg&aj9_cz!t#_zw66n)x5-04av6w6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ['*']
 
 TIME_ZONE = 'Asia/Shanghai'  # Always change this to set the log timestamps correctly
