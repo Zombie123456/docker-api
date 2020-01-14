@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 class AlipayMessageProvider(object):
     OK = constans.ALL_OK
     NOT_OK = constans.NOT_OK
+
     def sign(self, data, token):
         sign_str = '&'.join([f'{key}={value}' for key, value in sorted(data.items())])
         hmac_s2 = 'GET&%2F&' + parse.quote(parse.quote(sign_str, safe='=&'))

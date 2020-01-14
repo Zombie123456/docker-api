@@ -247,19 +247,18 @@ def reset_password(request):
             member = user_tok.member_user
             member_phone = member.phone
 
-
             if request.POST:
                 phone = request.POST.get('phone')
-                verfification_code = request.POST.get('verification_code')
+                verification_code = request.POST.get('verification_code')
                 new_password = request.POST.get('password')
             else:
                 phone = request.data.get('phone')
-                verfification_code = request.data.get('verification_code')
+                verification_code = request.data.get('verification_code')
                 new_password = request.data.get('password')
             if not member_phone == phone:
                 msg = _('not self phone')
                 return generate_response(constans.FIELD_ERROR, msg)
-            if not vertify_code(phone, verfification_code):
+            if not vertify_code(phone, verification_code):
                 msg = _('Incorrect verification code')
                 return generate_response(constans.FIELD_ERROR, msg)
             pattern = re.compile('^[a-zA-Z0-9]{6,15}$')
@@ -277,18 +276,18 @@ def reset_password(request):
     return generate_response(constans.NOT_ALLOWED, _('Not Allowed'))
 
 
-def set_auth(sessionid, message):
+def set_auth(session_id, message):
     data = {
-        'sessionid': sessionid,
+        'sessionid': session_id,
     }
 
-    cache.incr(sessionid)
+    cache.incr(session_id)
 
     response = generate_response(constans.FIELD_ERROR,
                                  msg=message,
                                  data=data)
 
-    response.set_cookie(key='sessionid', value=sessionid)
+    response.set_cookie(key='sessionid', value=session_id)
 
     return response
 
