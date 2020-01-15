@@ -262,16 +262,16 @@ LOGGING = {
            }
 }
 
-# DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
-# STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
+DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
+STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
 
 
-# ACCESS_KEY_ID = 'LTAIb5I3lIEeE8G9'
-# ACCESS_KEY_SECRET = '9aEqviBE0CwMU5MOvF2ScIeWGltKoR'
-# END_POINT = 'oss-cn-hongkong.aliyuncs.com'
-# BUCKET_NAME = 'chalice'
-# ALIYUN_OSS_CNAME = ''
-# BUCKET_ACL_TYPE = 'public-read'
+ACCESS_KEY_ID = os.environ.get('ACCESS_KEY_ID', 'LTAIb5I3lIEeE8G9')
+ACCESS_KEY_SECRET = os.environ.get('ACCESS_KEY_SECRET', '9aEqviBE0CwMU5MOvF2ScIeWGltKoR')
+END_POINT = os.environ.get('END_POINT', 'oss-cn-hongkong.aliyuncs.com')
+BUCKET_NAME = os.environ.get('BUCKET_NAME', 'chalice')
+ALIYUN_OSS_CNAME = ''
+BUCKET_ACL_TYPE = os.environ.get('BUCKET_ACL_TYPE', 'public-read')
 
 
 __app_logging = {'handlers': ['console', ],
