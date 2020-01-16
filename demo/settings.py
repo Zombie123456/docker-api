@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -262,12 +263,17 @@ LOGGING = {
            }
 }
 
+with open('/docker_api/aliyunkey.json') as f:
+    f_json = json.loads(f.read())
+    ACCESS_KEY_ID = f_json['AccessKeyId']
+    ACCESS_KEY_SECRET = f_json['AccessKeySecret']
+
 DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
 STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
 
 
-ACCESS_KEY_ID = os.environ.get('ACCESS_KEY_ID', 'LTAIb5I3lIEeE8G9')
-ACCESS_KEY_SECRET = os.environ.get('ACCESS_KEY_SECRET', '9aEqviBE0CwMU5MOvF2ScIeWGltKoR')
+# ACCESS_KEY_ID = os.environ.get('ACCESS_KEY_ID', 'LTAIb5I3lIEeE8G9')
+# ACCESS_KEY_SECRET = os.environ.get('ACCESS_KEY_SECRET', '9aEqviBE0CwMU5MOvF2ScIeWGltKoR')
 END_POINT = os.environ.get('END_POINT', 'oss-cn-hongkong.aliyuncs.com')
 BUCKET_NAME = os.environ.get('BUCKET_NAME', 'chalice')
 ALIYUN_OSS_CNAME = ''
