@@ -263,21 +263,19 @@ LOGGING = {
            }
 }
 
-with open('/docker_api/aliyunkey.json') as f:
-    f_json = json.loads(f.read())
-    ACCESS_KEY_ID = f_json['AccessKeyId']
-    ACCESS_KEY_SECRET = f_json['AccessKeySecret']
+ENV = os.environ.get('ENV', 'dev')
+if ENV == 'production':
+    with open('/docker_api/aliyunkey.json') as f:
+        f_json = json.loads(f.read())
+        ACCESS_KEY_ID = f_json['AccessKeyId']
+        ACCESS_KEY_SECRET = f_json['AccessKeySecret']
 
-DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
-STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
-
-
-# ACCESS_KEY_ID = os.environ.get('ACCESS_KEY_ID', 'LTAIb5I3lIEeE8G9')
-# ACCESS_KEY_SECRET = os.environ.get('ACCESS_KEY_SECRET', '9aEqviBE0CwMU5MOvF2ScIeWGltKoR')
-END_POINT = os.environ.get('END_POINT', 'oss-cn-hongkong.aliyuncs.com')
-BUCKET_NAME = os.environ.get('BUCKET_NAME', 'chalice')
-ALIYUN_OSS_CNAME = ''
-BUCKET_ACL_TYPE = os.environ.get('BUCKET_ACL_TYPE', 'public-read')
+    DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
+    STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
+    END_POINT = os.environ.get('END_POINT', 'oss-cn-hongkong.aliyuncs.com')
+    BUCKET_NAME = os.environ.get('BUCKET_NAME', 'chalice')
+    ALIYUN_OSS_CNAME = ''
+    BUCKET_ACL_TYPE = os.environ.get('BUCKET_ACL_TYPE', 'public-read')
 
 
 __app_logging = {'handlers': ['console', ],
