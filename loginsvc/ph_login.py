@@ -14,4 +14,4 @@ class EmailBackend(ModelBackend):
             if user and user.check_password(password):
                 return user
         else:
-            return super(EmailBackend, self).authenticate(request, username, password)
+            return super().authenticate(request, username, password)
