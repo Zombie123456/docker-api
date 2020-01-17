@@ -40,7 +40,6 @@ class ChecknameMemberViewSet(mixins.ListModelMixin,
 
     def list(self, request):
         data = request.GET
-        print(data)
         username = data.get('username')
         phone = data.get('phone')
         if not username and not phone:

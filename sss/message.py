@@ -50,7 +50,7 @@ class AlipayMessageProvider(object):
             'TemplateParam': json.dumps({'code': code})
             }
 
-        params['Signature'] =  self.sign(params, s_id)
+        params['Signature'] = self.sign(params, s_id)
 
         logger.info(params)
 

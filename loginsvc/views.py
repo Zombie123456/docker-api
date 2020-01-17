@@ -102,7 +102,6 @@ def current_user(request):
 def refresh_access_token(request):
     refresh_token = request.data.get('refresh_token') or \
         request.POST.get('refresh_token')
-    print(refresh_token)
     refresh_token_obj = \
         RefreshToken.objects.filter(token=refresh_token).first()
 
@@ -370,21 +369,18 @@ def get_valid_token(request, try_cookies=False, select_related_user=True):
         return None
 
     if select_related_user:
-        access_token = AccessToken.objects.select_related('user') \
-            .filter(token=access_token_str) \
-            .first()
+        access_token = AccessToken.objects.select_related('user').filter(token=access_token_str).first()
     else:
-        access_token = AccessToken.objects.filter(token=access_token_str) \
-            .first()
+        access_token = AccessToken.objects.filter(token=access_token_str).first()
     if not access_token or access_token.is_expired():
         return None
     return access_token
 
 
 def is_self_phonenum(request, phone):
-    token = get_valid_token(request)
+    token_obj = get_valid_token(request)
     try:
-        member_phone = token.user.member_user.phone
+        member_phone = token_obj.user.member_user.phone
         if member_phone != phone:
             return True
     except:
