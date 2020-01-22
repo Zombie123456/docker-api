@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from sss.models import Member, AlipayCode, AlipayAccount
+from sss.models import Member, AlipayCode, AlipayAccount, UploadModel
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -19,3 +19,4 @@ class AlipayAccountAdmin(admin.ModelAdmin):
 admin.site.register(Member, MemberAdmin)
 admin.site.register(AlipayCode, AlipayCodeAdmin)
 admin.site.register(AlipayAccount, AlipayAccountAdmin)
+admin.site.register(UploadModel)
