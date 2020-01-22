@@ -17,7 +17,7 @@ member_router.register(r'sendmessage',  # use ali_pay send message
                        account.SendMessagenameMemberViewSet,
                        base_name='sendmessage')
 member_router.register(r'upload',
-                       account.SendMessagenameMemberViewSet,
+                       account.UploadViewSet,
                        base_name='upload')
 
 
