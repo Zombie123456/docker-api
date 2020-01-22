@@ -5,12 +5,14 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
 from sss.models import (Member,
-                        AlipayCode)
+                        AlipayCode,
+                        UploadModel)
 from demo.utils import get_ip_addr, is_black_listed
 from demo.lib import constans
 from demo.throttling import CustomAnonThrottle
 from sss.serializer import (MemberRegisterSerializer,
-                            SendMessageSerializer)
+                            SendMessageSerializer,
+                            UploadSerializer)
 
 
 class MemberRegisterViewSet(mixins.CreateModelMixin,
@@ -71,12 +73,11 @@ class SendMessagenameMemberViewSet(mixins.CreateModelMixin,
         return ret
 
 
-
-
-
-
-
-
-
-
+class UploadViewSet(mixins.CreateModelMixin,
+                    mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
+    model = UploadModel
+    queryset = UploadModel.objects.all()
+    permission_classes = []
+    serializer_class = UploadSerializer
 
