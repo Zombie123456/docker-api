@@ -9,7 +9,7 @@ from .message import AlipayMessageProvider
 from demo.utils import get_ip_addr, vertify_code
 from loginsvc.views import is_self_phonenum
 from demo.lib import constans
-from sss.models import Member, AlipayCode
+from sss.models import Member, AlipayCode, UploadModel
 
 
 class MemberRegisterSerializer(serializers.ModelSerializer):
@@ -128,3 +128,9 @@ class SendMessageSerializer(serializers.ModelSerializer):
             validated_data['phone'] = phone
             validated_data['alipay_account'] = res.get('ali_obj')
             return validated_data
+
+
+class UploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UploadModel
+        fields = '__all__'
