@@ -272,9 +272,9 @@ if ENV == 'production':
 
     DEFAULT_FILE_STORAGE = 'django_aliyun_oss2.backends.AliyunMediaStorage'
     STATICFILES_STORAGE = 'django_aliyun_oss2.backends.AliyunStaticStorage'
-    END_POINT = os.environ.get('END_POINT', 'img.chalice.top')
+    END_POINT = os.environ.get('END_POINT', 'oss-cn-hongkong.aliyuncs.com')
     BUCKET_NAME = os.environ.get('BUCKET_NAME', 'chalice')
-    ALIYUN_OSS_CNAME = ''
+    ALIYUN_OSS_CNAME = 'img.chalice.top'
     ALIYUN_OSS_HTTPS = True
     BUCKET_ACL_TYPE = os.environ.get('BUCKET_ACL_TYPE', 'public-read')
 
