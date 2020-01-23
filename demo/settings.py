@@ -275,7 +275,7 @@ if ENV == 'production':
     END_POINT = os.environ.get('END_POINT', 'oss-cn-hongkong.aliyuncs.com')
     BUCKET_NAME = os.environ.get('BUCKET_NAME', 'chalice')
     ALIYUN_OSS_CNAME = 'img.chalice.top'
-    ALIYUN_OSS_HTTPS = False
+    ALIYUN_OSS_HTTPS = True
     BUCKET_ACL_TYPE = os.environ.get('BUCKET_ACL_TYPE', 'public-read')
 
 
