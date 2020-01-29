@@ -69,7 +69,8 @@ BROKER_HEARTBEAT = int(os.environ.get('RABBITMQ_HOST', 0))
 
 START_APP = [
     'sss',
-    'loginsvc'
+    'loginsvc',
+    'sentence'
 ]
 
 INSTALLED_APPS += START_APP
