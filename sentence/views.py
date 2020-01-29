@@ -13,7 +13,8 @@ class SentenceMemberViewSet(viewsets.GenericViewSet,
 
 
 class SentenceManageViewSet(viewsets.GenericViewSet,
-                            mixins.CreateModelMixin):
+                            mixins.CreateModelMixin,
+                            mixins.UpdateModelMixin):
     model = Sentence
     permission_classes = []
     queryset = Sentence.objects.all()
