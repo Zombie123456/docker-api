@@ -8,7 +8,7 @@ class SentenceMemberViewSet(viewsets.GenericViewSet,
                             mixins.ListModelMixin):
     model = Sentence
     permission_classes = []
-    queryset = Sentence.objects.all()
+    queryset = Sentence.objects.filter(is_show=True)
     serializer_class = SentenceSerializer
 
 
