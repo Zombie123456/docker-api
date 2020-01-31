@@ -14,6 +14,7 @@ class SentenceMemberViewSet(viewsets.GenericViewSet,
 
 class SentenceManageViewSet(viewsets.GenericViewSet,
                             mixins.CreateModelMixin,
+                            mixins.ListModelMixin,
                             mixins.UpdateModelMixin):
     model = Sentence
     permission_classes = []
