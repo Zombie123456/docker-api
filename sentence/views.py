@@ -15,7 +15,8 @@ class SentenceMemberViewSet(viewsets.GenericViewSet,
 class SentenceManageViewSet(viewsets.GenericViewSet,
                             mixins.CreateModelMixin,
                             mixins.ListModelMixin,
-                            mixins.UpdateModelMixin):
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin):
     model = Sentence
     permission_classes = []
     queryset = Sentence.objects.all()
