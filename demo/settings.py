@@ -70,6 +70,7 @@ BROKER_HEARTBEAT = int(os.environ.get('RABBITMQ_HOST', 0))
 START_APP = [
     'sss',
     'loginsvc',
+    'configset',
     'sentence'
 ]
 
@@ -79,17 +80,20 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'oauth2_provider',
     'captcha',
-    'configset',
-    'django_aliyun_oss2'
+    'django_aliyun_oss2',
+    'corsheaders'
 ]
+
+INSTALLED_APPS += THIRD_PARTY_APPS
 
 AUTHENTICATION_BACKENDS = (
     'loginsvc.ph_login.EmailBackend',
 )
 
-INSTALLED_APPS += THIRD_PARTY_APPS
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
