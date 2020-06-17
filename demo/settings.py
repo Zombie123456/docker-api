@@ -68,10 +68,9 @@ BROKER_URL = (f'amqp://{RABBITMQ_DEFAULT_USER}:{RABBITMQ_DEFAULT_PASS}'
 BROKER_HEARTBEAT = int(os.environ.get('RABBITMQ_HOST', 0))
 
 START_APP = [
-    'sss',
     'loginsvc',
-    'configset',
-    'sentence'
+    'account',
+    'house'
 ]
 
 INSTALLED_APPS += START_APP
@@ -85,10 +84,6 @@ THIRD_PARTY_APPS = [
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS
-
-AUTHENTICATION_BACKENDS = (
-    'loginsvc.ph_login.EmailBackend',
-)
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -124,8 +119,8 @@ TEMPLATES = [
 OAUTH2_PROVIDER = {
     # this is the list of available scopes
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope'},
-    'ACCESS_TOKEN_EXPIRE_SECONDS': 7200,  # 2 hour
-    'REFRESH_TOKEN_EXPIRE_SECONDS': 86400,  # 24 hour
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 3600 * 24 * 30,  # 2 hour
+    'REFRESH_TOKEN_EXPIRE_SECONDS': 3600 * 24 * 30,  # 24 hour
     'OAUTH_DELETE_EXPIRED': True,
 }
 
