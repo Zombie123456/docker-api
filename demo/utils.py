@@ -1,7 +1,4 @@
-from configset.models import GlobalPreferences
 from oauth2_provider.models import AccessToken
-
-from sss.models import AlipayCode
 
 
 def get_ip_addr(request):
@@ -18,33 +15,17 @@ def get_ip_addr(request):
     return ipaddr
 
 
-def is_black_listed(ipaddr):
-    try:
-        black_list = GlobalPreferences.objects.filter(
-            key='black_list').first().value.split(';')
-    except:
-        black_list = []
-
-    return ipaddr in black_list
-
-
 def get_user_type(user):
     if user:
-        if hasattr(user, 'member_user'):
-            return 'member'
-        if hasattr(user, 'staff_user'):
-            return 'staff'
-        else:
-            return 'admin'
+        staff = user.staff_user
+        if staff and staff.role:
+            data = {
+                'name': staff.role.name,
+                'id': staff.role.id,
+                'key': staff.role.key
+            }
+            return data
     return None
-
-
-def vertify_code(phone, code):
-    try:
-        a_code = AlipayCode.objects.get(status=1, phone=phone, code=code)
-        return a_code
-    except:
-        return False
 
 
 def parse_request_for_token(request):

@@ -18,3 +18,4 @@ django-redis==4.10.0
 tldextract
 django-aliyun-oss2
 django-cors-headers
+rest-condition==1.0.3
