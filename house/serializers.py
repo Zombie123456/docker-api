@@ -4,10 +4,19 @@ from house.models import House, BuildNum
 from demo.lib import constans
 
 
+class BuildNumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BuildNum
+        fields = '__all__'
+
+
 class HouseManagerSerializer(serializers.ModelSerializer):
+    build_num_id = serializers.IntegerField(write_only=True, required=False)
+
     class Meta:
         model = House
         fields = '__all__'
+        depth = 1
 
     def validate(self, data):
         request = self.context['request']
@@ -15,20 +24,30 @@ class HouseManagerSerializer(serializers.ModelSerializer):
         status = data.get('status')
         if request.method == 'PUT':
             if status is not None and self.instance.status in {House.Sign, House.FULL_MONEY} and staff.is_staff:
-                raise serializers.ValidationError({constans.NOT_OK: '已签约的房源状态不允许修改'})
+                raise serializers.ValidationError({constans.NOT_OK: '已签约的房源状态只有管理员才能修改'})
 
         return data
 
+    def to_internal_value(self, data):
+        ret = super().to_internal_value(data)
+        field = 'is_full_money'
+        if data.get(field) is None:
+            ret.pop(field, None)
+        return ret
+
 
 class HouseStaffSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(read_only=True)
-    info = serializers.CharField(read_only=True)
+
+    floor = serializers.CharField(read_only=True)
     room_num = serializers.CharField(read_only=True)
     area = serializers.CharField(read_only=True)
+    unit_type = serializers.CharField(read_only=True)
+    unit_price = serializers.CharField(read_only=True)
     price = serializers.CharField(read_only=True)
     phone = serializers.CharField(read_only=True)
     memo = serializers.CharField(read_only=True)
     sela_staff = serializers.CharField(read_only=True, source='sela_staff.user.username')
+    build_num = BuildNumSerializer(read_only=True)
 
     class Meta:
         model = House
@@ -57,9 +76,3 @@ class HouseStaffSerializer(serializers.ModelSerializer):
             instance.sela_staff = request.user.staff_user
         instance.save()
         return instance
-
-
-class BuildNumSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BuildNum
-        fields = '__all__'
