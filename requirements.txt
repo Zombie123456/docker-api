@@ -19,3 +19,4 @@ tldextract
 django-aliyun-oss2
 django-cors-headers
 rest-condition==1.0.3
+xlrd==1.2.0
