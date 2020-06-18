@@ -6,6 +6,7 @@ from account import views as accounts
 
 router = routers.DefaultRouter()
 router.register(r'staff', accounts.StaffViewSet, 'staff')
+router.register(r'role', accounts.RoleViewSet, 'role')
 
 
 urlpatterns = [
