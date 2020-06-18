@@ -127,6 +127,7 @@ OAUTH2_PROVIDER = {
 WSGI_APPLICATION = 'demo.wsgi.application'
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'demo.utils.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
