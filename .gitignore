@@ -95,7 +95,7 @@ venv/
 mysqldata/
 
 #migration files
-*/migrations/*
+#*/migrations/*
 !*/migrations/__init__.py
 
 .idea/

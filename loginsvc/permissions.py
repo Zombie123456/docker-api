@@ -27,3 +27,10 @@ class IsSeller(permissions.BasePermission):
         user = request.user
 
         return user.is_authenticated and user.staff_user.is_seller
+
+
+class ReadOnly(permissions.BasePermission):
+    message = _('This API is for read only.')
+
+    def has_permission(self, request, view):
+        return request.method in permissions.SAFE_METHODS

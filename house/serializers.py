@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from house.models import House
+from house.models import House, BuildNum
 from demo.lib import constans
 
 
@@ -57,3 +57,9 @@ class HouseStaffSerializer(serializers.ModelSerializer):
             instance.sela_staff = request.user.staff_user
         instance.save()
         return instance
+
+
+class BuildNumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BuildNum
+        fields = '__all__'
