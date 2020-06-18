@@ -1,11 +1,19 @@
+import os
+import xlrd
+
+from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
 from rest_framework import viewsets, mixins
 from rest_condition import Or
+from rest_framework.decorators import renderer_classes, api_view, permission_classes
 
 from house.models import House, BuildNum
 from house.serializers import HouseManagerSerializer, HouseStaffSerializer, BuildNumSerializer
 from house.filters import StaffFilter
 from loginsvc.permissions import IsSeller, IsManager, IsStaff, ReadOnly
 from demo.utils import CampaignRenderer
+from demo.lib import constans
+from loginsvc.views import generate_response
 
 
 class HouseViewSet(viewsets.ModelViewSet):
@@ -40,3 +48,47 @@ class BuildNumViewSet(viewsets.ModelViewSet):
     queryset = BuildNum.objects.all()
     permission_classes = [Or(IsStaff, IsManager, ReadOnly)]
     serializer_class = BuildNumSerializer
+
+
+@api_view(['POST'])
+@renderer_classes([CampaignRenderer])
+@csrf_exempt
+@permission_classes([IsManager])
+def import_excel_file(request):
+    import_file = request.FILES.get('import_file')
+
+    if not import_file:
+        return generate_response(constans.NOT_OK, msg='No incoming files')
+
+    file_name = import_file.__str__()
+    file_format = os.path.splitext(file_name)[-1]
+
+    if '.xlsx' in file_format:
+        workbook = xlrd.open_workbook(file_contents=import_file.read())
+        worksheet = workbook.sheet_by_index(0)
+        try:
+            with transaction.atomic():
+                row = '1-2'
+                build_obj = BuildNum.objects.create(name=worksheet.row_values(0)[0], code=worksheet.row_values(0)[0])
+                obj_list = []
+                for i in range(2, worksheet.nrows):
+                    row = i
+                    try:
+                        floor = int(worksheet.row_values(i)[0])
+                    except:
+                        floor = worksheet.row_values(i)[0]
+                    data = {
+                        'floor': floor,
+                        'room_num': worksheet.row_values(i)[1].strip(),
+                        'unit_type': worksheet.row_values(i)[2].strip(),
+                        'area': worksheet.row_values(i)[3],
+                        'unit_price': worksheet.row_values(i)[4],
+                        'price': worksheet.row_values(i)[5],
+                        'build_num': build_obj
+                    }
+                    obj_list.append(House(**data))
+                House.objects.bulk_create(obj_list)
+        except Exception as e:
+            return generate_response(constans.NOT_OK, msg=f'发生错误，请检查第{row}行的数据: {e}')
+
+        return generate_response(constans.ALL_OK, msg='导入成功')
