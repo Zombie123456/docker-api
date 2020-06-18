@@ -1,12 +1,21 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, mixins
 from rest_framework.response import Response
 
 
-from account.models import Staff
+from account.models import Staff, Role
 from loginsvc.permissions import IsStaff, IsManager, IsSeller
-from account.serializers import StaffSerializer
+from account.serializers import StaffSerializer, RoleSerializer
 from account.filters import StaffFilter
 from demo.utils import CampaignRenderer
+
+
+class RoleViewSet(viewsets.GenericViewSet,
+                  mixins.ListModelMixin):
+    model = Role
+    queryset = Role.objects.all()
+    permission_classes = [IsManager]
+    renderer_classes = [CampaignRenderer]
+    serializer_class = RoleSerializer
 
 
 class StaffViewSet(viewsets.ModelViewSet):
