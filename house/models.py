@@ -1,4 +1,5 @@
 from django.db import models
+from account.models import Staff
 
 
 class House(models.Model):
@@ -11,11 +12,15 @@ class House(models.Model):
                      (Sign, '签约房源'), (FULL_MONEY, '全款到账'))
 
     name = models.CharField(max_length=100, null=True, blank=True)
-    info = models.TextField()
+    info = models.TextField(null=True, blank=True)
     room_num = models.CharField(max_length=20, blank=True, null=True)
-    area = models.IntegerField(blank=True)
+    area = models.IntegerField(blank=True, default=0)
     is_full_money = models.BooleanField(default=False)
     price = models.CharField(max_length=20, blank=True, null=True)
-    phone = models.IntegerField(blank=True)
-    memo = models.TextField()
+    phone = models.CharField(blank=True, null=True, max_length=20)
+    memo = models.TextField(null=True, blank=True)
     status = models.IntegerField(default=CAN_SELA, choices=STATUS_OPTION)
+    sela_staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.name

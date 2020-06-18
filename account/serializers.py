@@ -37,15 +37,15 @@ class StaffSerializer(serializers.ModelSerializer):
             if not data['password']:
                 raise serializers.ValidationError({'password': 'This field is required.'})
         if data['username'] is not None and not re.match('^[a-zA-Z0-9]{5,15}$', data['username']):
-            raise serializers.ValidationError(constans.INVALID_USERNAME)
+            raise serializers.ValidationError({constans.NOT_OK: '用户名必须为5-15位的英数字'})
 
         pk = self.instance.user.pk if self.instance else None
         if User.objects.filter(username__iexact=data['username']).exclude(pk=pk).exists():
-            raise serializers.ValidationError(constans.USERNAME_IN_USED)
+            raise serializers.ValidationError({constans.NOT_OK: '用户名已经存在'})
 
         if request.method == 'POST' or data.get('role_id') is not None:
             if not Role.objects.filter(id=data.get('role_id', 0)).exists():
-                raise serializers.ValidationError()
+                raise serializers.ValidationError({constans.NOT_OK: '身份 id 不存在'})
 
         return data
 
