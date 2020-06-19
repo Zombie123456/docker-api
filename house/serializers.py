@@ -38,7 +38,7 @@ class HouseManagerSerializer(serializers.ModelSerializer):
 
 class HouseStaffSerializer(serializers.ModelSerializer):
 
-    floor = serializers.CharField(read_only=True)
+    floor = serializers.IntegerField(read_only=True)
     room_num = serializers.CharField(read_only=True)
     area = serializers.CharField(read_only=True)
     unit_type = serializers.CharField(read_only=True)
