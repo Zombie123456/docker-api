@@ -19,7 +19,7 @@ class House(models.Model):
     STATUS_OPTION = ((CAN_SELA, '可售房源'), (CONTROL, '销控房源'),
                      (Sign, '签约房源'), (FULL_MONEY, '全款到账'))
 
-    floor = models.CharField(max_length=100, null=True, blank=True)
+    floor = models.IntegerField(null=True, blank=True)
     room_num = models.CharField(max_length=20, blank=True, null=True)
     area = models.FloatField(blank=True, default=0.0)
     unit_type = models.CharField(max_length=20, null=True, blank=True)

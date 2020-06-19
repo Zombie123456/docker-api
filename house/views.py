@@ -1,9 +1,11 @@
 import os
 import xlrd
+from collections import OrderedDict
 
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from rest_framework import viewsets, mixins
+from rest_framework.response import Response
 from rest_condition import Or
 from rest_framework.decorators import renderer_classes, api_view, permission_classes
 
@@ -16,19 +18,34 @@ from demo.lib import constans
 from loginsvc.views import generate_response
 
 
-class HouseViewSet(viewsets.ModelViewSet):
+class HouseBaseViewSet(viewsets.GenericViewSet,
+                       mixins.UpdateModelMixin,
+                       mixins.RetrieveModelMixin,
+                       mixins.CreateModelMixin,):
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        ret = OrderedDict()
+        for i in serializer.data:
+            if ret.get(i['floor']):
+                ret[i['floor']].append(i)
+            else:
+                ret[i['floor']] = [i]
+
+        return Response(ret)
+
+
+class HouseViewSet(mixins.DestroyModelMixin, HouseBaseViewSet):
     model = House
-    queryset = House.objects.all()
+    queryset = House.objects.all().order_by('floor')
     serializer_class = HouseManagerSerializer
     permission_classes = [Or(IsManager, IsStaff)]
     filter_class = StaffFilter
     renderer_classes = [CampaignRenderer]
 
 
-class HouseStaffViewSet(viewsets.GenericViewSet,
-                        mixins.ListModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.RetrieveModelMixin):
+class HouseStaffViewSet(HouseBaseViewSet):
 
     model = House
     queryset = House.objects.filter(status=House.CAN_SELA)
