@@ -65,3 +65,7 @@ class CarSet(models.Model):
 
     def __str__(self):
         return f'{self.id}'
+
+    @classmethod
+    def get_floor_list(cls):
+        return list(cls.objects.all().distinct().values_list('floor', flat=True))

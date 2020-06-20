@@ -16,4 +16,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('import_file/', house.import_excel_file),
     path('import_car_file/', house.import_car_excel_file),
+    path('car_floor_list/', house.car_floor_list),
 ]
