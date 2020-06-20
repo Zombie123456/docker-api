@@ -10,7 +10,7 @@ from rest_condition import Or
 from rest_framework.decorators import renderer_classes, api_view, permission_classes
 
 from house.models import House, BuildNum, CarSet
-from house.serializers import HouseManagerSerializer, HouseStaffSerializer, BuildNumSerializer, CarSetSerializer
+from house.serializers import HouseManagerSerializer, HouseStaffSerializer, BuildNumSerializer, CarSetSerializer, CarSetStaffSerializer
 from house.filters import StaffFilter, CarSetFilter
 from loginsvc.permissions import IsSeller, IsManager, IsStaff, ReadOnly
 from demo.utils import CampaignRenderer
@@ -84,7 +84,7 @@ class CarStaffViewSet(viewsets.GenericViewSet,
     model = CarSet
     queryset = CarSet.objects.filter(status=CarSet.CAN_SELA).order_by('-floor')
     permission_classes = [Or(IsSeller, IsManager, IsStaff)]
-    serializer_class = CarSetSerializer
+    serializer_class = CarSetStaffSerializer
     renderer_classes = [CampaignRenderer]
     filter_class = CarSetFilter
 
