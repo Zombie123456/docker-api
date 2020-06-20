@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from rest_condition import Or
 from rest_framework.decorators import renderer_classes, api_view, permission_classes
 
-from house.models import House, BuildNum
-from house.serializers import HouseManagerSerializer, HouseStaffSerializer, BuildNumSerializer
+from house.models import House, BuildNum, CarSet
+from house.serializers import HouseManagerSerializer, HouseStaffSerializer, BuildNumSerializer, CarSetSerializer
 from house.filters import StaffFilter
 from loginsvc.permissions import IsSeller, IsManager, IsStaff, ReadOnly
 from demo.utils import CampaignRenderer
@@ -65,6 +65,22 @@ class BuildNumViewSet(viewsets.ModelViewSet):
     queryset = BuildNum.objects.all()
     permission_classes = [Or(IsStaff, IsManager, ReadOnly)]
     serializer_class = BuildNumSerializer
+
+
+class CarViewSet(mixins.DestroyModelMixin, HouseBaseViewSet):
+    model = CarSet
+    queryset = CarSet.objects.all().order_by('-floor')
+    permission_classes = [Or(IsManager, IsStaff)]
+    serializer_class = CarSetSerializer
+    renderer_classes = [CampaignRenderer]
+
+
+class CarStaffViewSet(HouseStaffViewSet):
+    model = CarSet
+    queryset = CarSet.objects.all().order_by('-floor')
+    permission_classes = [Or(IsSeller, IsManager, IsStaff)]
+    serializer_class = CarSetSerializer
+    renderer_classes = [CampaignRenderer]
 
 
 @api_view(['POST'])
@@ -133,13 +149,24 @@ def import_car_excel_file(request):
                 row = '1-2'
                 obj_list = []
                 for i in range(2, worksheet.nrows):
+                    row = i
                     data = worksheet.row_values(i)
+                    if not data[2]:
+                        continue
                     if data[1].strip() == '子母':
-                        pass
+                        set_type = CarSet.MOTHER
+                    else:
+                        set_type = CarSet.NORMAL
+
                     db_data = {
                         'floor': int(data[0][:2]),
-                        'set_num_1': data[0]
+                        'set_num': data[0],
+                        'price': data[3],
+                        'set_type': set_type
                     }
+                    obj_list.append(CarSet(**db_data))
+
+                CarSet.objects.bulk_create(obj_list)
 
         except Exception as e:
             return generate_response(constans.NOT_OK, msg=f'发生错误，请检查第{row}行的数据: {e}')

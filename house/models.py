@@ -44,8 +44,8 @@ class CarSet(models.Model):
     Sign = 2
     FULL_MONEY = 3
 
-    STATUS_OPTION = ((CAN_SELA, '可售房源'), (CONTROL, '销控房源'),
-                     (Sign, '签约房源'), (FULL_MONEY, '全款到账'))
+    STATUS_OPTION = ((CAN_SELA, '可售车位'), (CONTROL, '销控车位'),
+                     (Sign, '签约车位'), (FULL_MONEY, '全款到账'))
 
     MOTHER = 0
     NORMAL = 1
@@ -53,15 +53,15 @@ class CarSet(models.Model):
                    (NORMAL, '标准'))
 
     name = models.CharField(max_length=20, blank=True, null=True)
+    phone = models.CharField(blank=True, null=True, max_length=20)
     status = models.IntegerField(default=CAN_SELA, choices=STATUS_OPTION)
     sela_staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, blank=True)
     is_full_money = models.BooleanField(default=False)
     price = models.CharField(max_length=20, blank=True, null=True)
     floor = models.IntegerField(null=True, blank=True)
     set_type = models.IntegerField(default=NORMAL, choices=TYPE_OPTION)
-    count = models.IntegerField(default=1)
-    set_num_1 = models.CharField(max_length=20, blank=True, null=True)
-    set_num_2 = models.CharField(max_length=20, blank=True, null=True)
+    set_num = models.CharField(max_length=20, blank=True, null=True)
+    memo = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.id}'
