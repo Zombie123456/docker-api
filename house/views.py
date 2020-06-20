@@ -20,8 +20,7 @@ from loginsvc.views import generate_response
 
 class HouseBaseViewSet(viewsets.GenericViewSet,
                        mixins.UpdateModelMixin,
-                       mixins.RetrieveModelMixin,
-                       mixins.CreateModelMixin,):
+                       mixins.RetrieveModelMixin):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -36,7 +35,9 @@ class HouseBaseViewSet(viewsets.GenericViewSet,
         return Response(ret)
 
 
-class HouseViewSet(mixins.DestroyModelMixin, HouseBaseViewSet):
+class HouseViewSet(mixins.DestroyModelMixin,
+                   HouseBaseViewSet,
+                   mixins.CreateModelMixin):
     model = House
     queryset = House.objects.all().order_by('floor')
     serializer_class = HouseManagerSerializer
@@ -67,7 +68,7 @@ class BuildNumViewSet(viewsets.ModelViewSet):
     serializer_class = BuildNumSerializer
 
 
-class CarViewSet(mixins.DestroyModelMixin, HouseBaseViewSet):
+class CarViewSet(viewsets.ModelViewSet):
     model = CarSet
     queryset = CarSet.objects.all().order_by('-floor')
     permission_classes = [Or(IsManager, IsStaff)]
@@ -75,7 +76,10 @@ class CarViewSet(mixins.DestroyModelMixin, HouseBaseViewSet):
     renderer_classes = [CampaignRenderer]
 
 
-class CarStaffViewSet(HouseStaffViewSet):
+class CarStaffViewSet(viewsets.GenericViewSet,
+                      mixins.UpdateModelMixin,
+                      mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin):
     model = CarSet
     queryset = CarSet.objects.filter(status=CarSet. CAN_SELA).order_by('-floor')
     permission_classes = [Or(IsSeller, IsManager, IsStaff)]
