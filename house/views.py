@@ -182,3 +182,11 @@ def import_car_excel_file(request):
 
         return generate_response(constans.ALL_OK, msg='导入成功')
     return generate_response(constans.NOT_OK, msg=f'只支持 xlsx 文件')
+
+
+@api_view(['GET'])
+@renderer_classes([CampaignRenderer])
+@csrf_exempt
+@permission_classes([])
+def car_floor_list(request):
+    return Response(CarSet.get_floor_list())
