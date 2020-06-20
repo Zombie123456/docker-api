@@ -82,7 +82,7 @@ class CarStaffViewSet(viewsets.GenericViewSet,
                       mixins.ListModelMixin,
                       mixins.RetrieveModelMixin):
     model = CarSet
-    queryset = CarSet.objects.filter(status=CarSet. CAN_SELA).order_by('-floor')
+    queryset = CarSet.objects.filter(status=CarSet.CAN_SELA).order_by('-floor')
     permission_classes = [Or(IsSeller, IsManager, IsStaff)]
     serializer_class = CarSetSerializer
     renderer_classes = [CampaignRenderer]
