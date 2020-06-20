@@ -77,10 +77,15 @@ class CarViewSet(mixins.DestroyModelMixin, HouseBaseViewSet):
 
 class CarStaffViewSet(HouseStaffViewSet):
     model = CarSet
-    queryset = CarSet.objects.all().order_by('-floor')
+    queryset = CarSet.objects.filter(status=CarSet. CAN_SELA).order_by('-floor')
     permission_classes = [Or(IsSeller, IsManager, IsStaff)]
     serializer_class = CarSetSerializer
     renderer_classes = [CampaignRenderer]
+
+    def get_queryset(self):
+        if self.request.GET.get('my_sale_house'):
+            return CarSet.objects.filter(sela_staff=self.request.user.staff_user)
+        return self.queryset
 
 
 @api_view(['POST'])
