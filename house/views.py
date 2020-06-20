@@ -56,7 +56,7 @@ class HouseStaffViewSet(HouseBaseViewSet):
 
     def get_queryset(self):
         if self.request.GET.get('my_sale_house'):
-            return House.objects.filter(sela_staff=self.request.user)
+            return House.objects.filter(sela_staff=self.request.user.staff_user)
         return self.queryset
 
 
@@ -109,3 +109,40 @@ def import_excel_file(request):
             return generate_response(constans.NOT_OK, msg=f'发生错误，请检查第{row}行的数据: {e}')
 
         return generate_response(constans.ALL_OK, msg='导入成功')
+    return generate_response(constans.NOT_OK, msg=f'只支持 xlsx 文件')
+
+
+@api_view(['POST'])
+@renderer_classes([CampaignRenderer])
+@csrf_exempt
+@permission_classes([IsManager])
+def import_car_excel_file(request):
+    import_file = request.FILES.get('import_file')
+
+    if not import_file:
+        return generate_response(constans.NOT_OK, msg='No incoming files')
+
+    file_name = import_file.__str__()
+    file_format = os.path.splitext(file_name)[-1]
+
+    if '.xlsx' in file_format:
+        workbook = xlrd.open_workbook(file_contents=import_file.read())
+        worksheet = workbook.sheet_by_index(0)
+        try:
+            with transaction.atomic():
+                row = '1-2'
+                obj_list = []
+                for i in range(2, worksheet.nrows):
+                    data = worksheet.row_values(i)
+                    if data[1].strip() == '子母':
+                        pass
+                    db_data = {
+                        'floor': int(data[0][:2]),
+                        'set_num_1': data[0]
+                    }
+
+        except Exception as e:
+            return generate_response(constans.NOT_OK, msg=f'发生错误，请检查第{row}行的数据: {e}')
+
+        return generate_response(constans.ALL_OK, msg='导入成功')
+    return generate_response(constans.NOT_OK, msg=f'只支持 xlsx 文件')
