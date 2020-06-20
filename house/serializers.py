@@ -44,7 +44,6 @@ class HouseStaffSerializer(serializers.ModelSerializer):
     unit_type = serializers.CharField(read_only=True)
     unit_price = serializers.CharField(read_only=True)
     price = serializers.CharField(read_only=True)
-    phone = serializers.CharField(read_only=True)
     memo = serializers.CharField(read_only=True)
     sela_staff = serializers.CharField(read_only=True, source='sela_staff.user.username')
     build_num = BuildNumSerializer(read_only=True)

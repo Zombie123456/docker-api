@@ -21,6 +21,7 @@ class House(models.Model):
 
     floor = models.IntegerField(null=True, blank=True)
     room_num = models.CharField(max_length=20, blank=True, null=True)
+    name = models.CharField(max_length=20, blank=True, null=True)
     area = models.FloatField(blank=True, default=0.0)
     unit_type = models.CharField(max_length=20, null=True, blank=True)
     unit_price = models.CharField(max_length=20, blank=True, null=True)
