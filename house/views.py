@@ -11,7 +11,7 @@ from rest_framework.decorators import renderer_classes, api_view, permission_cla
 
 from house.models import House, BuildNum, CarSet
 from house.serializers import HouseManagerSerializer, HouseStaffSerializer, BuildNumSerializer, CarSetSerializer
-from house.filters import StaffFilter
+from house.filters import StaffFilter, CarSetFilter
 from loginsvc.permissions import IsSeller, IsManager, IsStaff, ReadOnly
 from demo.utils import CampaignRenderer
 from demo.lib import constans
@@ -74,6 +74,7 @@ class CarViewSet(viewsets.ModelViewSet):
     permission_classes = [Or(IsManager, IsStaff)]
     serializer_class = CarSetSerializer
     renderer_classes = [CampaignRenderer]
+    filter_class = CarSetFilter
 
 
 class CarStaffViewSet(viewsets.GenericViewSet,
@@ -85,6 +86,7 @@ class CarStaffViewSet(viewsets.GenericViewSet,
     permission_classes = [Or(IsSeller, IsManager, IsStaff)]
     serializer_class = CarSetSerializer
     renderer_classes = [CampaignRenderer]
+    filter_class = CarSetFilter
 
     def get_queryset(self):
         if self.request.GET.get('my_sale_house'):
