@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 from rest_condition import Or
 from rest_framework.decorators import renderer_classes, api_view, permission_classes
 
@@ -48,9 +49,11 @@ class HouseViewSet(mixins.DestroyModelMixin,
     def get_serializer_class(self):
         if self.request.method == 'GET':
             try:
-                self.get_object()
+                obj = self.get_object()
             except:
                 return HouseManagerGetSerializer
+            if obj.status != House.CAN_SELA:
+                raise APIException()
 
         return HouseManagerSerializer
 
