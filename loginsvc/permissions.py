@@ -21,16 +21,9 @@ class IsStaff(permissions.BasePermission):
 
 
 class IsSeller(permissions.BasePermission):
-    message = _('只有销售人员可以访问')
+    message = _('销售人员只可以查看数据')
 
     def has_permission(self, request, view):
         user = request.user
 
-        return user.is_authenticated and user.staff_user.is_seller
-
-
-class ReadOnly(permissions.BasePermission):
-    message = _('This API is for read only.')
-
-    def has_permission(self, request, view):
-        return request.method in permissions.SAFE_METHODS
+        return user.is_authenticated and user.staff_user.is_seller and request.method in permissions.SAFE_METHODS

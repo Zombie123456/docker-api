@@ -5,16 +5,14 @@ from house import views as house
 
 
 router = routers.DefaultRouter()
-router.register(r'manager_car', house.CarViewSet, 'manager_house')
-router.register(r'manager_house', house.HouseViewSet, 'manager_house')
-router.register(r'seller_house', house.HouseStaffViewSet, 'seller_house')
-router.register(r'seller_car', house.CarStaffViewSet, 'seller_house')
+router.register(r'house', house.HouseViewSet, 'manager_house')
 router.register(r'build_num', house.BuildNumViewSet, 'build_num')
+router.register(r'community', house.CommunityViewSet, 'community')
+router.register(r'import_log', house.ImportLogViewSet, 'import_log')
 
 
 urlpatterns = [
     path('', include(router.urls)),
     path('import_file/', house.import_excel_file),
     path('import_car_file/', house.import_car_excel_file),
-    path('car_floor_list/', house.car_floor_list),
 ]
