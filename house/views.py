@@ -188,3 +188,17 @@ def import_car_excel_file(request):
 
         return generate_response(constans.ALL_OK, msg='导入成功')
     return generate_response(constans.NOT_OK, msg=f'只支持 xlsx 文件')
+
+
+@api_view(['GET'])
+@renderer_classes([CampaignRenderer])
+@csrf_exempt
+@permission_classes([])
+def floor_id_list(request):
+    build_num = request.GET.get('build_num_id')
+    try:
+        build = BuildNum.objects.get(id=build_num)
+    except:
+        return generate_response(constans.NOT_OK, msg=f'请传入 build_num_id')
+    floor_list = sorted(list(House.objects.filter(build_num=build).distinct().values_list('floor', flat=True)))
+    return generate_response(constans.ALL_OK, data=floor_list, msg=None)
