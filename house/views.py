@@ -49,11 +49,9 @@ class HouseViewSet(mixins.DestroyModelMixin,
     def get_serializer_class(self):
         if self.request.method == 'GET':
             try:
-                obj = self.get_object()
+                self.get_object()
             except:
                 return HouseManagerGetSerializer
-            if obj.status != House.CAN_SELA:
-                raise APIException()
 
         return HouseManagerSerializer
 
