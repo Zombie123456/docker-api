@@ -7,8 +7,7 @@ class Community(models.Model):
 
 
 class BuildNum(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True)
-    code = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True, blank=True)
     community = models.ForeignKey(Community, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):

@@ -64,6 +64,7 @@ class BuildNumViewSet(viewsets.ModelViewSet):
     permission_classes = [Or(IsStaff, IsManager, IsSeller)]
     serializer_class = BuildNumSerializer
     filter_class = BuildNumFilter
+    renderer_classes = [CampaignRenderer]
 
 
 class CommunityViewSet(viewsets.ModelViewSet):
