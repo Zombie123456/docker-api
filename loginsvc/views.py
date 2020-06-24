@@ -126,7 +126,7 @@ def login(request):
     if not application:
         return compose_error_response('此帐户无法登录管理中心')
     app = Application.objects.get(name=application)
-    data_d = create_token(user, app)
+    data_d = create_token(user, app, False)
     response = JsonResponse(data_d, status=200)
     response.set_cookie(key='access_token',
                         value=data_d['access_token'])
