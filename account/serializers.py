@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from account.models import Staff, Role
 from demo.lib import constans
+from loginsvc.views import delete_token
 
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -58,6 +59,9 @@ class StaffSerializer(serializers.ModelSerializer):
             new_password = validated_data['password']
             instance.user.set_password(new_password)
             instance.user.save()
+            delete_token(instance.user)
+        if validated_data.get('status') == Staff.STAFF_INACTIVE:
+            delete_token(instance.user)
 
         return super().update(instance, validated_data)
 
