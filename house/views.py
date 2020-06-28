@@ -41,7 +41,7 @@ class HouseViewSet(mixins.DestroyModelMixin,
                    HouseBaseViewSet,
                    mixins.CreateModelMixin):
     model = House
-    queryset = House.objects.all().order_by('floor')
+    queryset = House.objects.all().order_by('floor', 'room_num')
     permission_classes = [Or(IsManager, IsStaff, IsSeller)]
     filter_class = StaffFilter
     renderer_classes = [CampaignRenderer]
