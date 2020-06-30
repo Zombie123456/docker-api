@@ -166,7 +166,9 @@ def import_car_excel_file(request):
                         continue
                     if data[1].strip() == '子母':
                         set_type = House.MOTHER
+                        car_num = worksheet.row_values(i+1)[0]
                     else:
+                        car_num = None
                         set_type = House.NORMAL
 
                     db_data = {
@@ -176,7 +178,8 @@ def import_car_excel_file(request):
                         'set_type': set_type,
                         'build_num': build,
                         'is_car': True,
-                        'import_log': import_log
+                        'import_log': import_log,
+                        'car_num': car_num
                     }
                     obj_list.append(House(**db_data))
 
