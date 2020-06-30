@@ -13,7 +13,7 @@ class BuildNumSerializer(serializers.ModelSerializer):
 class HouseManagerGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
-        fields = ('id', 'room_num', 'floor', 'status', 'is_car')
+        fields = ('id', 'room_num', 'floor', 'status', 'is_car', 'set_type', 'car_num')
 
 
 class HouseManagerSerializer(serializers.ModelSerializer):
